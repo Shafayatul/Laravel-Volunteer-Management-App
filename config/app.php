@@ -163,7 +163,10 @@ return [
         Collective\Html\HtmlServiceProvider::class,
         // spatie/laravel-permission
         Spatie\Permission\PermissionServiceProvider::class,
-
+        /**
+        * yajra/laravel-datatables
+        */
+        Yajra\DataTables\DataTablesServiceProvider::class,
 
     ],
 
