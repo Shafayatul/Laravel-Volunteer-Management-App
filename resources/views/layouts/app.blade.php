@@ -34,7 +34,7 @@
 
 </head>
 
-<body class="theme-cyan">
+<body class="theme-red">
     <!-- Page Loader -->
     <div class="page-loader-wrapper">
         <div class="loader">

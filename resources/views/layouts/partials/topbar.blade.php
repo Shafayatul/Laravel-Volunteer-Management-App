@@ -3,7 +3,7 @@
         <div class="navbar-header">
             <a href="javascript:void(0);" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse" aria-expanded="false"></a>
             <a href="javascript:void(0);" class="bars"></a>
-            <a class="navbar-brand" href="{{ url('/') }}">Project Oblio Airdrop</a>
+            <a class="navbar-brand" href="{{ url('/') }}">Dominic</a>
         </div>
         <div class="collapse navbar-collapse" id="navbar-collapse">
             <ul class="nav navbar-nav navbar-right">
@@ -118,7 +118,15 @@
                     </ul>
                 </li> --}}
                 <!-- #END# Notifications -->
-                {{-- <li class="pull-right"><a href="javascript:void(0);" class="js-right-sidebar" data-close="true"><i class="material-icons">more_vert</i></a></li> --}}
+                <!-- Tasks -->
+                {{-- <li class="dropdown">
+                    <a href="{{url('/cart/view')}}"  role="button">
+                        <i class="material-icons">add_shopping_cart</i>
+                        <span class="label-count" id="cart-top">{{$current_cart_item}}</span>
+                    </a>
+                </li> --}}
+                <!-- #END# Tasks -->
+                <li class="pull-right"><a href="javascript:void(0);" class="js-right-sidebar" data-close="true"><i class="material-icons">more_vert</i></a></li>
             </ul>
         </div>
     </div>

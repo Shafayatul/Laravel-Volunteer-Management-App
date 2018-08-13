@@ -4,12 +4,7 @@
             <!-- User Info -->
             <div class="user-info">
                 <div class="image">
-                    
-                    @if($current_user->avatar == null)
-                        <img src="{{ URL::asset('images/user.png') }}" width="48" height="48" alt="User" />
-                    @else
-                        <img src="{{ $current_user->avatar }}" width="48" height="48" alt="User" />
-                    @endif
+                    <img src="{{ URL::asset('images/user.png') }}" width="48" height="48" alt="User" />
                 </div>
                 <div class="info-container">
                     <div class="name" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{$current_user->name}}</div>
@@ -93,7 +88,7 @@
         </aside>
         <!-- #END# Left Sidebar -->
         <!-- Right Sidebar -->
-{{--         <aside id="rightsidebar" class="right-sidebar">
+        <aside id="rightsidebar" class="right-sidebar">
             <ul class="nav nav-tabs tab-nav-right" role="tablist">
                 <li role="presentation" class="active"><a href="#skins" data-toggle="tab">SKINS</a></li>
                 <li role="presentation"><a href="#settings" data-toggle="tab">SETTINGS</a></li>
@@ -233,6 +228,6 @@
                     </div>
                 </div>
             </div>
-        </aside> --}}
+        </aside>
         <!-- #END# Right Sidebar -->
     </section>
