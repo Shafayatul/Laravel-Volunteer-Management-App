@@ -14,7 +14,7 @@
 Route::get('/', function () {
     return view('welcome');
 });
-
+Route::get('/home', 'HomeController@index')->name('home');
 Auth::routes();
 
 //only admin
@@ -28,4 +28,4 @@ Route::group(['middleware' => ['role:Admin']], function () {
 
 
 
-Route::get('/home', 'HomeController@index')->name('home');
+

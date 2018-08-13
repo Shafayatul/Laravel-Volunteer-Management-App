@@ -11,18 +11,18 @@
     <title>Volunteer Web-app</title>
 
     <!-- Bootstrap core CSS -->
-    <link href="{{ URL::asset('home/vendor/bootstrap/css/bootstrap.min.css')}}" rel="stylesheet">
+    <link href="{{ URL::asset('home-asset/vendor/bootstrap/css/bootstrap.min.css')}}" rel="stylesheet">
 
     <!-- Custom fonts for this template -->
     <link href="https://fonts.googleapis.com/css?family=Catamaran:100,200,300,400,500,600,700,800,900" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Lato:100,100i,300,300i,400,400i,700,700i,900,900i" rel="stylesheet">
 
     <!-- Custom styles for this template -->
-    <link href="{{ URL::asset('home/css/one-page-wonder.css')}}" rel="stylesheet">
+    <link href="{{ URL::asset('home-asset/css/one-page-wonder.css')}}" rel="stylesheet">
 
     <!-- Bootstrap core JavaScript -->
-    <script src="{{ URL::asset('home/vendor/jquery/jquery.min.js')}}"></script>
-    <script src="{{ URL::asset('home/vendor/bootstrap/js/bootstrap.bundle.min.js')}}"></script>
+    <script src="{{ URL::asset('home-asset/vendor/jquery/jquery.min.js')}}"></script>
+    <script src="{{ URL::asset('home-asset/vendor/bootstrap/js/bootstrap.bundle.min.js')}}"></script>
 
     <style type="text/css">
       #login-btn{
