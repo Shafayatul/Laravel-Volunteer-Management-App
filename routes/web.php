@@ -17,4 +17,15 @@ Route::get('/', function () {
 
 Auth::routes();
 
+//only admin
+Route::group(['middleware' => ['role:Admin']], function () {
+    Route::post('/admin/assignRole',  'RoleController@assignRole'); 
+    Route::get('/admin/datatable/role_assign', 'RoleController@datatable_user_role');
+    Route::get('/admin/role/assign',  'RoleController@assign')->name('role.assign'); 
+    Route::resource('/admin/role',  'RoleController');  
+});
+
+
+
+
 Route::get('/home', 'HomeController@index')->name('home');

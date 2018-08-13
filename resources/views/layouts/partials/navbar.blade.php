@@ -12,11 +12,9 @@
                     <div class="btn-group user-helper-dropdown">
                         <i class="material-icons" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">keyboard_arrow_down</i>
                         <ul class="dropdown-menu pull-right">
-                            @can('Manage Own Profile')
                             <li>
                                 <a href="{{url('/profile')}}"><i class="material-icons">person</i>Profile</a>
                             </li>
-                            @endcan
                             <li>
                                 <a href="{{ url('/select-type') }}" ><i class="material-icons">autorenew</i>Change Type</a>
                             </li>
@@ -41,46 +39,28 @@
                             <span>Dashboard</span>
                         </a>
                     </li>
-                
-                    <li>
-                        <a href="{{ url('/zeros/create') }}">
-                            <i class="material-icons">spellcheck</i>
-                            <span>Step 0 - Ethereum Address</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="{{ url('/ones/create') }}">
-                            <i class="material-icons">account_box</i>
-                            <span>Step 1 - Address verification</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="{{ url('/twos/create') }}">
-                            <i class="material-icons">assessment</i>
-                            <span>Step 2 - Medium Level</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="{{ url('/threes/create') }}">
-                            <i class="material-icons">perm_phone_msg</i>
-                            <span>Step 3 - Phone varification</span>
-                        </a>
-                    </li>
-                    @if($current_user->type=="advance")   
-                        <li>
-                            <a href="{{ url('/fours/create') }}">
-                                <i class="material-icons">school</i>
-                                <span>Step 3 - University varification</span>
-                            </a>
-                        </li>
 
-                        <li>
-                            <a href="{{ url('/fives/create') }}">
-                                <i class="material-icons">camera_roll</i>
-                                <span>Step 4 - Selfi varification</span>
-                            </a>
-                        </li>
-                    @endif
+                    {{-- Only For Admin --}}
+                    @role('Admin')
+                    <li>
+                        <a href="javascript:void(0);" class="menu-toggle">
+                            <i class="material-icons">supervisor_account</i>
+                            <span>Role</span>
+                        </a>
+                        <ul class="ml-menu">
+                            <li>
+                                <a href="{!! route('role.create') !!}">Add Role</a>
+                            </li>
+                            <li>
+                                <a href="{{ route('role.index') }}">Role List</a>
+                            </li>
+                            <li>
+                                <a href="{{ route('role.assign') }}">Assign Role</a>
+                            </li>
+                        </ul>
+                    </li>
+                    @endrole
+
 
                     
                 </ul>
