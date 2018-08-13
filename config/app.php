@@ -161,6 +161,8 @@ return [
         App\Providers\RouteServiceProvider::class,
         // laravelCollective
         Collective\Html\HtmlServiceProvider::class,
+        // spatie/laravel-permission
+        Spatie\Permission\PermissionServiceProvider::class,
 
 
     ],
