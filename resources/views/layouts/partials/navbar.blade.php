@@ -41,7 +41,7 @@
                     </li>
 
                     {{-- Only For Admin --}}
-                    @role('Admin')
+                    @hasrole('Admin')
                     <li>
                         <a href="javascript:void(0);" class="menu-toggle">
                             <i class="material-icons">supervisor_account</i>
@@ -59,7 +59,7 @@
                             </li>
                         </ul>
                     </li>
-                    @endrole
+                    @endhasrole
 
 
                     
