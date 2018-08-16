@@ -48,7 +48,7 @@
     <!-- Navigation -->
     <nav class="navbar navbar-expand-lg navbar-dark navbar-custom fixed-top">
       <div class="container">
-        <a class="navbar-brand" href="#">Volunteer Web-app</a>
+        <a class="navbar-brand" href="{{ url('/') }}">Volunteer Web-app</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
@@ -61,8 +61,8 @@
                   Sign Up
                 </button>
                 <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                  <a class="dropdown-item" href="#">Teacher Sign Up</a>
-                  <a class="dropdown-item" href="#">Volunteer Sign Up</a>
+                  <a class="dropdown-item" href="{{ url('/teacher/signup') }}">Teacher Sign Up</a>
+                  <a class="dropdown-item" href="{{ url('/volunteer/signup') }}">Volunteer Sign Up</a>
                 </div>
               </div>
             </li>

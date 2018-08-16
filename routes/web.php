@@ -16,6 +16,8 @@ Route::get('/', function () {
 });
 Route::get('/home', 'HomeController@index')->name('home');
 Auth::routes();
+Route::post('/teacher/signup', 'TeachersController@signup_store');
+Route::get('/teacher/signup', 'TeachersController@signup');
 
 //only admin
 Route::group(['middleware' => ['role:Admin']], function () {
@@ -23,9 +25,11 @@ Route::group(['middleware' => ['role:Admin']], function () {
     Route::get('/admin/datatable/role_assign', 'RoleController@datatable_user_role');
     Route::get('/admin/role/assign',  'RoleController@assign')->name('role.assign'); 
     Route::resource('/admin/role',  'RoleController');  
+
+    //Teacher Module
+    Route::post('/ajax/delete-teacher', 'TeachersController@ajax_delete_teacher');
+    Route::get('/datatable/teacher-list', 'TeachersController@teachers_list');
+    Route::resource('teachers', 'TeachersController');
 });
-
-
-
 
 

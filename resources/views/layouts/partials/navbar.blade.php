@@ -59,6 +59,21 @@
                             </li>
                         </ul>
                     </li>
+                    <li>
+                        <a href="javascript:void(0);" class="menu-toggle">
+                            <i class="material-icons">school</i>
+                            <span>Teacher</span>
+                        </a>
+                        <ul class="ml-menu">
+                            <li>
+                                <a href="{!! route('teachers.create') !!}">Add Teacher</a>
+                            </li>
+                            <li>
+                                <a href="{{ route('teachers.index') }}">Teacher List</a>
+                            </li>
+                        </ul>
+                    </li>
+
                     @endhasrole
 
 
