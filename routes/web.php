@@ -16,10 +16,16 @@ Route::get('/', function () {
 });
 Route::get('/home', 'HomeController@index')->name('home');
 Auth::routes();
+
 Route::post('/teacher/signup', 'TeachersController@signup_store');
 Route::get('/teacher/signup', 'TeachersController@signup');
 
-//only admin
+Route::post('/volunteer/signup', 'VolunteersController@signup_store');
+Route::get('/volunteer/signup', 'VolunteersController@signup');
+
+/**
+* only admin
+*/
 Route::group(['middleware' => ['role:Admin']], function () {
     Route::post('/admin/assignRole',  'RoleController@assignRole'); 
     Route::get('/admin/datatable/role_assign', 'RoleController@datatable_user_role');
@@ -30,6 +36,13 @@ Route::group(['middleware' => ['role:Admin']], function () {
     Route::post('/ajax/delete-teacher', 'TeachersController@ajax_delete_teacher');
     Route::get('/datatable/teacher-list', 'TeachersController@teachers_list');
     Route::resource('teachers', 'TeachersController');
+
+
+    //Volunteer Module
+    Route::post('/ajax/delete-volunteer', 'VolunteersController@ajax_delete_volunteer');
+    Route::get('/datatable/volunteer-list', 'VolunteersController@volunteers_list');
+    Route::resource('volunteers', 'VolunteersController');
 });
+
 
 

@@ -20,7 +20,7 @@ class TeachersController extends Controller
      */
     public function index(Request $request)
     {
-        return view('teachers.index', compact('teachers'));
+        return view('teachers.index');
     }
     
     public function teachers_list()
@@ -188,6 +188,12 @@ class TeachersController extends Controller
         
         $teacher = Teacher::findOrFail($id);
         $teacher->update($requestData);
+
+        //update name
+        $name = $request->first_name.' '.$request->last_name;
+        $user = User::find($teacher->user_id);
+        $user->name = $name;
+        $user->save();
 
         return redirect('teachers')->with('flash_message', 'Teacher updated!');
     }

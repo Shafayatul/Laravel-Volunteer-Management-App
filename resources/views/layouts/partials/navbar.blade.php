@@ -73,6 +73,20 @@
                             </li>
                         </ul>
                     </li>
+                    <li>
+                        <a href="javascript:void(0);" class="menu-toggle">
+                            <i class="material-icons">group</i>
+                            <span>Volunteer</span>
+                        </a>
+                        <ul class="ml-menu">
+                            <li>
+                                <a href="{!! route('volunteers.create') !!}">Add Volunteer</a>
+                            </li>
+                            <li>
+                                <a href="{{ route('volunteers.index') }}">Volunteer List</a>
+                            </li>
+                        </ul>
+                    </li>
 
                     @endhasrole
 
