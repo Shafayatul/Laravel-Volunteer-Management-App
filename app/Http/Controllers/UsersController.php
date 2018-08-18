@@ -36,6 +36,7 @@ class UsersController extends Controller
                     $user = User::find($id);
                     $user->password = Hash::make($request->input("new_password"));
                     $user->save();
+                    Session::flash('success','Password successfully updated.');
                 }else{
                     Session::flash('error','Old passowrds is not correct.');
                 }
@@ -43,10 +44,6 @@ class UsersController extends Controller
                 Session::flash('error','Passowrds do not match.');
             }
         }
-
-
-        Session::flash('success','Password successfully updated.');
-
         return back();
     }
 }

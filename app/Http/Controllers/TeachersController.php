@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
+use Image;
 use Session;
 use App\Teacher;
 use App\User;
@@ -13,6 +14,12 @@ use \DataTables;
 
 class TeachersController extends Controller
 {
+    private $photos_path;
+
+    public function __construct()
+    {
+        $this->photos_path = public_path('/uploads');
+    }
     /**
      * Display a listing of the resource.
      *
@@ -91,6 +98,24 @@ class TeachersController extends Controller
             ]);
         if($user){
 
+            if ($request->hasFile('image')) {
+
+              $photo = $request->file('image');
+
+
+              $name = sha1(date('YmdHis') . str_random(30));
+              $save_name = $name . '.' . $photo->getClientOriginalExtension();
+              Image::make($photo)
+                  ->resize(200, null, function ($constraints) {
+                      $constraints->aspectRatio();
+                  })
+                  ->save($this->photos_path.'/thumbnail/'.$save_name);
+
+              $photo->move($this->photos_path.'/', $save_name);
+            }else{
+                $save_name = "";
+            }
+
             $teacher = new Teacher;
             $teacher->user_id = $user->id;
             $teacher->first_name = $request->first_name;
@@ -100,6 +125,7 @@ class TeachersController extends Controller
             $teacher->class_one = $request->class_one;
             $teacher->class_two = $request->class_two;
             $teacher->class_three = $request->class_three;
+            $teacher->image = $save_name;
             $teacher->save();
 
             Session::flash('success','Teacher has been successfully added.');
@@ -125,6 +151,24 @@ class TeachersController extends Controller
             ]);
         if($user){
 
+            if ($request->hasFile('image')) {
+
+              $photo = $request->file('image');
+
+
+              $name = sha1(date('YmdHis') . str_random(30));
+              $save_name = $name . '.' . $photo->getClientOriginalExtension();
+              Image::make($photo)
+                  ->resize(200, null, function ($constraints) {
+                      $constraints->aspectRatio();
+                  })
+                  ->save($this->photos_path.'/thumbnail/'.$save_name);
+
+              $photo->move($this->photos_path.'/', $save_name);
+            }else{
+                $save_name = "";
+            }
+
             $teacher = new Teacher;
             $teacher->user_id = $user->id;
             $teacher->first_name = $request->first_name;
@@ -134,6 +178,7 @@ class TeachersController extends Controller
             $teacher->class_one = $request->class_one;
             $teacher->class_two = $request->class_two;
             $teacher->class_three = $request->class_three;
+            $teacher->image = $save_name;
             $teacher->save();
 
             if(auth()->attempt(['email' => $request->email, 'password' => $request->password])){

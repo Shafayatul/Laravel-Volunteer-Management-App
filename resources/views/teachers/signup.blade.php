@@ -46,7 +46,7 @@
 
         	<div class="row">
         		<div class="col-md-8  mx-auto">
-        			{!! Form::open(['url' => url('/teacher/signup')]) !!}
+        			{!! Form::open(['url' => url('/teacher/signup'), 'files' => true]) !!}
 					<div class="row" style="background: rgba(0, 0, 0, 0.56);padding: 3em; min-height: 426px;">
 						<div class="col-md-12">
 							<h3 class="text-center">Register</h3>
@@ -85,6 +85,11 @@
 					            {!! Form::text('school_name', null, ('' == 'required') ? ['class' => 'form-control transparent-input', 'required' => 'required', 'placeholder' => 'School Name'] : ['class' => 'form-control transparent-input', 'placeholder' => 'School Name']) !!}
 					            {!! $errors->first('school_name', '<p class="help-block">:message</p>') !!}
 					        </div>
+					        <br>
+			        		<div class="{{ $errors->has('image') ? 'has-error' : ''}}">
+			        			<p>Upload Profile Image:</p>
+			        			{!! Form::file('image', null, ('' == 'required') ? ['class' => 'form-control', 'required' => 'required'] : ['class' => 'form-control']) !!}
+			        		</div> 
 					    </div>
 					    <div class="col-sm-6">
 

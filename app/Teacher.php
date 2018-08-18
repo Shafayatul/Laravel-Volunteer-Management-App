@@ -25,7 +25,7 @@ class Teacher extends Model
      *
      * @var array
      */
-    protected $fillable = ['user_id', 'first_name', 'last_name', 'phone_number', 'school_name', 'class_one', 'class_two', 'class_three'];
+    protected $fillable = ['user_id', 'first_name', 'last_name', 'phone_number', 'school_name', 'class_one', 'class_two', 'class_three', 'image'];
 
     
 }
