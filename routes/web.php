@@ -45,4 +45,13 @@ Route::group(['middleware' => ['role:Admin']], function () {
 });
 
 
+/**
+* only admin
+*/
+Route::group(['middleware' => ['role:Admin|Teacher|Volunteer']], function () {
+    Route::post('/update-password', 'UsersController@update_password');
+    Route::get('/update-password', 'UsersController@show_update_password');
+});
+
+
 

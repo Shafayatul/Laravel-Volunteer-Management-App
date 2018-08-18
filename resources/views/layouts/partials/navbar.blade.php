@@ -16,7 +16,7 @@
                                 <a href="{{url('/profile')}}"><i class="material-icons">person</i>Profile</a>
                             </li>
                             <li>
-                                <a href="{{ url('/select-type') }}" ><i class="material-icons">autorenew</i>Change Type</a>
+                                <a href="{{ url('/update-password') }}" ><i class="material-icons">screen_lock_rotation</i>Change Password</a>
                             </li>
                             <li>
                                 <a href="{{ url('/logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();" ><i class="material-icons">input</i>Sign Out</a>
