@@ -8,6 +8,7 @@ use App\Http\Controllers\Controller;
 use App\User;
 use Session;
 use Image;
+use Auth;
 use App\Volunteer;
 use Illuminate\Http\Request;
 use \DataTables;
@@ -29,6 +30,13 @@ class VolunteersController extends Controller
     public function index(Request $request)
     {
         return view('volunteers.index');
+    }
+    
+    public function profile()
+    {
+      $user = Auth::user();
+      $volunteer = Volunteer::where('user_id', $user->id)->first();
+      return view('volunteers.profile', compact('user', 'volunteer'));
     }
     
     public function volunteers_list()
@@ -98,6 +106,8 @@ class VolunteersController extends Controller
             ]);
         if($user){
 
+          $user->syncRoles('Volunteer');
+
             if ($request->hasFile('image')) {
 
               $photo = $request->file('image');
@@ -154,6 +164,8 @@ class VolunteersController extends Controller
              'password'         => bcrypt($request->password)
             ]);
         if($user){
+
+          $user->syncRoles('Volunteer');
 
             if ($request->hasFile('image')) {
 

@@ -12,9 +12,16 @@
                     <div class="btn-group user-helper-dropdown">
                         <i class="material-icons" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">keyboard_arrow_down</i>
                         <ul class="dropdown-menu pull-right">
+                            @hasrole('Teacher')
                             <li>
-                                <a href="{{url('/profile')}}"><i class="material-icons">person</i>Profile</a>
+                                <a href="{{url('teacher/profile')}}"><i class="material-icons">person</i>Profile</a>
                             </li>
+                            @endhasrole
+                            @hasrole('Volunteer')
+                            <li>
+                                <a href="{{url('/volunteer/profile')}}"><i class="material-icons">person</i>Profile</a>
+                            </li>
+                            @endhasrole
                             <li>
                                 <a href="{{ url('/update-password') }}" ><i class="material-icons">screen_lock_rotation</i>Change Password</a>
                             </li>

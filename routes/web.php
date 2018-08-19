@@ -46,11 +46,30 @@ Route::group(['middleware' => ['role:Admin']], function () {
 
 
 /**
-* only admin
+* All
 */
 Route::group(['middleware' => ['role:Admin|Teacher|Volunteer']], function () {
     Route::post('/update-password', 'UsersController@update_password');
     Route::get('/update-password', 'UsersController@show_update_password');
+});
+
+
+
+/**
+* only Volunteer
+*/
+Route::group(['middleware' => ['role:Volunteer']], function () {
+    Route::get('/volunteer/profile', 'VolunteersController@profile');
+});
+
+
+
+
+/**
+* only Teacher
+*/
+Route::group(['middleware' => ['role:Teacher']], function () {
+    Route::get('/teacher/profile', 'TeachersController@profile');
 });
 
 

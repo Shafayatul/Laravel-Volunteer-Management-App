@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
+use Auth;
 use Image;
 use Session;
 use App\Teacher;
@@ -29,7 +30,16 @@ class TeachersController extends Controller
     {
         return view('teachers.index');
     }
+
     
+    public function profile()
+    {
+      $user = Auth::user();
+      $teacher = Teacher::where('user_id', $user->id)->first();
+      return view('teachers.profile', compact('user', 'teacher'));
+    }
+    
+
     public function teachers_list()
     {
         $teachers = Teacher::
@@ -98,6 +108,8 @@ class TeachersController extends Controller
             ]);
         if($user){
 
+            $user->syncRoles('Teacher');
+
             if ($request->hasFile('image')) {
 
               $photo = $request->file('image');
@@ -150,6 +162,8 @@ class TeachersController extends Controller
              'password'         => bcrypt($request->password)
             ]);
         if($user){
+
+            $user->syncRoles('Teacher');
 
             if ($request->hasFile('image')) {
 
