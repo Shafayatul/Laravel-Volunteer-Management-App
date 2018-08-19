@@ -46,7 +46,7 @@
 
         	<div class="row">
         		<div class="col-md-8  mx-auto">
-        			{!! Form::open(['url' => url('/volunteer/signup')]) !!}
+        			{!! Form::open(['url' => url('/volunteer/signup'), 'files' => true]) !!}
 					<div class="row" style="background: rgba(0, 0, 0, 0.56);padding: 3em; min-height: 426px;">
 						<div class="col-md-12">
 							<h3 class="text-center">Register</h3>

@@ -19,24 +19,35 @@
                         @include('layouts.partials.alert')
                         <div class="body">
                             
-                        	<div class="row">
-                        		<div class="col-md-6">
-									<div class="row">
-		                        		<div class="col-md-4">
-		                        			<img src="{{ url('/uploads/'.$volunteer->image) }}" class="img-thumbnail">
-		                        			}
-		                        		</div>
-		                        		<div class="col-md-8">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            @if($volunteer->image != "")
+                                               <img src="{{ url('/uploads/'.$volunteer->image) }}" class="img-thumbnail">
+                                            @else
+                                                <img src="{{ url('/images/user.png') }}" class="img-thumbnail">
+                                            @endif
+                                        </div>
+                                        <div class="col-md-8">
+                                            <h4>{{$user->name}}</h4>
+                                            <p><b>Email:</b> {{$user->email}}</p>
+                                            <p><b>Volunteer Since:</b> {{date('Y', strtotime($user->created_at))}}</p>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <p><b>Phone:</b> {{$volunteer->phone_number}}</p>
+                                            <p><b>Detail:</b> {{$volunteer->provide_detail}}</p>
+                                            <p><b>Current Employer:</b> {{$volunteer->current_employer}}</p>
+                                            <p><b>Years Of Experience:</b> {{$volunteer->years_of_experience}}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
 
-		                        		</div>
-
-		                        	</div>
-                        		</div>
-
-                        		<div class="col-md-6">
-                        			
-                        		</div>
-                        	</div>
+                                </div>
+                            </div>
 
                         </div>
                     </div>
