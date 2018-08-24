@@ -40,13 +40,10 @@
                 <button class="btn btn-block bg-pink waves-effect" type="submit">SIGN IN</button>
             </div>
         </div>
-        <!-- <div class="row m-t-15 m-b--20">
-            <div class="col-xs-6">
-                <a href="sign-up.html">Register Now!</a>
+        <div class="row">
+            <div class="col-xs-8 p-t-5">
+                <a href="{{url('/password/reset')}}">Forgot Password?</a>
             </div>
-            <div class="col-xs-6 align-right">
-                <a href="forgot-password.html">Forgot Password?</a>
-            </div>
-        </div> -->
+        </div>
     </form>
 @endsection
