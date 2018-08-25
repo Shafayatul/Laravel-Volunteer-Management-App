@@ -72,3 +72,4 @@ Route::group(['middleware' => ['role:Teacher']], function () {
     Route::get('/teacher/profile', 'TeachersController@profile');
 });
 Route::resource('opportunities', 'OpportunitiesController');
+Route::resource('tasks', 'TasksController');

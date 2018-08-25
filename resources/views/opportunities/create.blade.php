@@ -39,7 +39,7 @@
     $(function(){
         var countTask = 2;
         $(document).on('click', '#add-more-task', function(){
-            $('#task-div').append('<div class="col-sm-12"><input class="form-control" placeholder="Task-'+countTask+' Description" name="task[]" type="text"></div>');
+            $('#task-div').append('<div class="col-sm-12"><input class="form-control" placeholder="Task-'+countTask+' Description" name="tasks[]" type="text"></div>');
             countTask++;
         });
     }); 

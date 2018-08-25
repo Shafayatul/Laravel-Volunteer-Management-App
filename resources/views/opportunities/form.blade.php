@@ -130,7 +130,7 @@
 <hr>
 <div class="row" id="task-div">
     <div class="col-sm-12">
-        {!! Form::text('task[]', null, ['class' => 'form-control', 'required' => 'required', 'placeholder' => 'Task-1 Description']) !!}
+        {!! Form::text('tasks[]', null, ['class' => 'form-control', 'required' => 'required', 'placeholder' => 'Task-1 Description']) !!}
     </div>
 </div>
 

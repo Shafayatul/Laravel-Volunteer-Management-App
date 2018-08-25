@@ -8,6 +8,7 @@ use App\Http\Controllers\Controller;
 use Auth;
 use Session;
 use App\Opportunity;
+use App\Task;
 use Illuminate\Http\Request;
 
 class OpportunitiesController extends Controller
@@ -85,8 +86,13 @@ class OpportunitiesController extends Controller
         
         $opprotunity = Opportunity::create($requestData+['user_id'=>$user->id]);
 
-        Session::flash('success',$opprotunity->id);
-        // Session::flash('success','Opportunity has been successfully added.');
+        foreach ($request->tasks as $task) {
+            if ($task !="") {
+                Task::create(['opportunity_id'=>$opprotunity->id, 'description'=>$task]);
+            }
+        }
+
+        Session::flash('success','Opportunity has been successfully added.');
 
         return redirect('opportunities')->with('flash_message', 'Opportunity added!');
     }
