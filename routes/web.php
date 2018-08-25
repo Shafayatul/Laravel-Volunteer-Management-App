@@ -36,12 +36,14 @@ Route::group(['middleware' => ['role:Admin']], function () {
     Route::post('/ajax/delete-teacher', 'TeachersController@ajax_delete_teacher');
     Route::get('/datatable/teacher-list', 'TeachersController@teachers_list');
     Route::resource('teachers', 'TeachersController');
+    Route::get('/admin/teachers/profile/{id}', 'TeachersController@profile_admin');
 
 
     //Volunteer Module
     Route::post('/ajax/delete-volunteer', 'VolunteersController@ajax_delete_volunteer');
     Route::get('/datatable/volunteer-list', 'VolunteersController@volunteers_list');
     Route::resource('volunteers', 'VolunteersController');
+    Route::get('/admin/volunteers/profile/{id}', 'VolunteersController@profile_admin');
 });
 
 
@@ -71,5 +73,6 @@ Route::group(['middleware' => ['role:Volunteer']], function () {
 Route::group(['middleware' => ['role:Teacher']], function () {
     Route::get('/teacher/profile', 'TeachersController@profile');
 });
+
 Route::resource('opportunities', 'OpportunitiesController');
 Route::resource('tasks', 'TasksController');

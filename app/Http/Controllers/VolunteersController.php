@@ -37,6 +37,12 @@ class VolunteersController extends Controller
       $user = Auth::user();
       $volunteer = Volunteer::where('user_id', $user->id)->first();
       return view('volunteers.profile', compact('user', 'volunteer'));
+    }    
+    public function profile_admin($id)
+    {
+      $user = User::where('id', $id)->first();
+      $volunteer = Volunteer::where('user_id', $user->id)->first();
+      return view('volunteers.profile', compact('user', 'volunteer'));
     }
     
     public function volunteers_list()
@@ -49,8 +55,8 @@ class VolunteersController extends Controller
                 );
         return Datatables::of($volunteers)
             ->addColumn('action', function($row){
-                /*<a href="'.url("/volunteers/" . $row->id).'" title="View Volunteer"><button class="btn btn-info btn-sm"><i class="fa fa-eye" aria-hidden="true"></i> View</button></a>*/
                 return '
+                <a href="'.url("/admin/volunteers/profile/" . $row->id).'" title="Profile"><button class="btn btn-info btn-sm"><i class="material-icons">perm_identity</i></button></a>
                 <a href="'.url("/volunteers/" . $row->id . "/edit").'" title="Edit Volunteer"><button class="btn btn-primary btn-sm"><i class="material-icons">mode_edit</i></button></a>
 
                 <button class="btn btn-danger btn-sm user-delete" title="Delete Volunteer" user-id="'.$row->user_id.'"><i class="material-icons">delete</i></button>
