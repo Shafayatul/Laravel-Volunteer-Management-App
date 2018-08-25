@@ -19,7 +19,7 @@
                         @include('layouts.partials.alert')
                         <div class="body">
                             
-                        {!! Form::open(['url' => '/opportunities', 'class' => 'form-horizontal', 'files' => true]) !!}
+                        {!! Form::open(['url' => '/opportunities', 'class' => 'form-horizontal opportunity-form', 'files' => true]) !!}
 
                         @include ('opportunities.form', ['formMode' => 'create'])
 
@@ -42,6 +42,13 @@
             $('#task-div').append('<div class="col-sm-12"><input class="form-control" placeholder="Task-'+countTask+' Description" name="tasks[]" type="text"></div>');
             countTask++;
         });
+
+        $(document).on('click', '.submit-opportunity', function(){
+            var id = $(this).attr('id');
+            $('input[name="is_published"]').val(id);
+            $('.opportunity-form').submit();
+        });
+        
     }); 
 </script>
     

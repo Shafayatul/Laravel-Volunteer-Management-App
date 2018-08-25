@@ -141,6 +141,9 @@
 </div>
 
 {!! Form::hidden('is_published', '0')!!}
-<div class="">
-    {!! Form::submit($formMode === 'edit' ? 'Update' : 'Create', ['class' => 'btn btn-primary']) !!}
+<div class="row">
+    <div class="col-sm-12 text-right">
+        <button type="button" class="btn btn-primary btn-lg submit-opportunity" id="0">SAVE Opportunity</button>
+        <button type="button" class="btn btn-primary btn-lg submit-opportunity" id="1">POST Opportunity</button>
+    </div>
 </div>
