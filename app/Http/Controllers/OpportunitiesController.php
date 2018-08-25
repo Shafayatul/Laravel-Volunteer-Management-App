@@ -10,9 +10,26 @@ use Session;
 use App\Opportunity;
 use App\Task;
 use Illuminate\Http\Request;
+use \DataTables;
 
 class OpportunitiesController extends Controller
 {
+
+
+    public function opportunities_list()
+    {
+        $id = Auth::id();
+        $opportunities = Opportunity::where('user_id', $id)->get();
+        return Datatables::of($opportunities)
+            ->addColumn('action', function($row){
+                return '
+                <a href="'.url("/opportunities/" . $row->id).'" title="Detail"><button class="btn btn-primary btn-sm"><i class="material-icons">details</i></button></a>
+                ';
+            })
+            ->rawColumns(['action'])
+            ->make(true);
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -107,8 +124,9 @@ class OpportunitiesController extends Controller
     public function show($id)
     {
         $opportunity = Opportunity::findOrFail($id);
+        $tasks = Task::where('opportunity_id', $id)->get();
 
-        return view('opportunities.show', compact('opportunity'));
+        return view('opportunities.show', compact('opportunity', 'tasks'));
     }
 
     /**

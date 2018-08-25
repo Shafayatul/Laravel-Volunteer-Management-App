@@ -23,9 +23,8 @@
                                 <thead>
                                     <tr>
                                         <th>ID</th>
-                                        <th>Name</th>
-                                        <th>Email</th>
-                                        <th>Phone</th>
+                                        <th>Title</th>
+                                        <th>Date</th>
                                         <th>Action</th>
                                     </tr>
                                 </thead>
@@ -71,46 +70,14 @@
 @section('footer-script')
 <script type="text/javascript">
     $(function(){
-        $('#delete-user-model').modal({
-           show:false,
-           backdrop:'static'
-        });
-     
-        $(document).on('click', '.user-delete', function(){
-            userId = $(this).attr('user-id');
-            $('#delete-user-model').modal('show');
-        });
-        $(document).on('click', '.btn-user-delete-decision', function(){
-            var decision = $(this).attr("id");
-            if(decision == "Yes"){
-                $.ajax({
-                     type:'POST',
-                     url:"{{ url('/ajax/delete-volunteer') }}",
-                     headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
-                     data:{
-                        'userId' : userId
-                     },
-                     success:function(data){
-                        $('#delete-user-model').modal('toggle');
-                        if(data.msg=="Success"){
-                            table.ajax.reload( null, false );
-                            // alert("User successfully deleted.");
-                        }
-                     }
-                });
-            }else{
-                $('#delete-user-model').modal('toggle');
-            }
-        });
         var table = $('#users-table').DataTable({
             processing: true,
             serverSide: true,
-            ajax: '{{ url("/datatable/volunteer-list") }}',
+            ajax: '{{ url("/datatable/opportunity-list") }}',
             columns: [
-                {data: 'id', name: 'volunteers.id'},
-                {data: 'name', name: 'name'},
-                {data: 'email', name: 'email'},
-                {data: 'phone_number', name: 'volunteers.phone_number'},
+                {data: 'id', name: 'id'},
+                {data: 'title', name: 'title'},
+                {data: 'date', name: 'date'},
                 {data: 'action'}
             ]
         });

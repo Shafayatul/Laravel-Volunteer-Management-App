@@ -13,7 +13,7 @@
                     <div class="card">
                         <div class="header">
                             <h2>
-                                My Profile
+                                Profile Info
                             </h2>
                         </div>
                         @include('layouts.partials.alert')
