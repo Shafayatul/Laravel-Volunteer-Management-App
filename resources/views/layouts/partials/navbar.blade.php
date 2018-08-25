@@ -96,7 +96,20 @@
                     </li>
 
                     @endhasrole
-
+                    <li>
+                        <a href="javascript:void(0);" class="menu-toggle">
+                            <i class="material-icons">event</i>
+                            <span>Opportunity</span>
+                        </a>
+                        <ul class="ml-menu">
+                            <li>
+                                <a href="{!! route('opportunities.create') !!}">Add Opportunity</a>
+                            </li>
+                            <li>
+                                <a href="{{ route('opportunities.index') }}">Opportunity List</a>
+                            </li>
+                        </ul>
+                    </li>
 
                     
                 </ul>
