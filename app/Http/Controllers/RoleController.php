@@ -38,35 +38,6 @@ class RoleController extends Controller
      *
      * @return \Illuminate\View\View
      */
-    public function assign()
-    {
-        $roles = Role::all();
-        return view('role.assign', compact('roles'));
-    }    
-
-    
-    public function datatable_user_role()
-    {
-        $users = User::
-                select(
-                    'users.id as id', 
-                    'users.name as name', 
-                    'users.email as email'
-                );
-        return Datatables::of($users)
-            ->addColumn('action', function($row){
-                return '
-                <button type="button" class="btn bg-blue-grey waves-effect addign-specialist" data-toggle=" model" title="Change Assigned Specialist" data-target="#assign-user-model" id="'.$row->id.'">
-                    <i class="material-icons">merge_type</i>
-                </button>';
-            })
-            ->addColumn('role', function($row){
-                $user = User::where('id', $row->id)->first();
-                return '<span id="role_'.$row->id.'">'.$user->getRoleNames().'</span>';
-            })
-            ->rawColumns(['action', 'role'])
-            ->make(true);
-    }
 
     /**
      * Assign role to user - ajax

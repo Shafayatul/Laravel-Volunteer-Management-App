@@ -22,11 +22,11 @@
                             {!! Form::model($opportunity, [
                                 'method' => 'PATCH',
                                 'url' => ['/opportunities', $opportunity->id],
-                                'class' => 'form-horizontal',
+                                'class' => 'form-horizontal opportunity-form',
                                 'files' => true
                             ]) !!}
 
-                            @include ('opportunities.form', ['formMode' => 'edit'])
+                            @include ('opportunities.form-edit', ['formMode' => 'edit'])
 
                             {!! Form::close() !!}
 
@@ -39,35 +39,22 @@
     </section>
 @endsection
 
+@section('footer-script')
+<script type="text/javascript">
+    $(function(){
+        var countTask = 2;
+        $(document).on('click', '#add-more-task', function(){
+            $('#task-div').append('<div class="col-sm-12"><input class="form-control" placeholder="Task-'+countTask+' Description" name="tasks[]" type="text"></div>');
+            countTask++;
+        });
 
-@extends('layouts.app')
-
-@section('content')
-    <div class="container">
-        <div class="row">
-            @include('admin.sidebar')
-
-            <div class="col-md-9">
-                <div class="card">
-                    <div class="card-header">Edit Opportunity #{{ $opportunity->id }}</div>
-                    <div class="card-body">
-                        <a href="{{ url('/opportunities') }}" title="Back"><button class="btn btn-warning btn-sm"><i class="fa fa-arrow-left" aria-hidden="true"></i> Back</button></a>
-                        <br />
-                        <br />
-
-                        @if ($errors->any())
-                            <ul class="alert alert-danger">
-                                @foreach ($errors->all() as $error)
-                                    <li>{{ $error }}</li>
-                                @endforeach
-                            </ul>
-                        @endif
-
-
-
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+        $(document).on('click', '.submit-opportunity', function(){
+            var id = $(this).attr('id');
+            $('input[name="is_published"]').val(id);
+            $('.opportunity-form').submit();
+        });
+        
+    }); 
+</script>
+    
 @endsection

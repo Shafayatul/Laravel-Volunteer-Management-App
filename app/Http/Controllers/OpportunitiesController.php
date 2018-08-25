@@ -23,7 +23,8 @@ class OpportunitiesController extends Controller
         return Datatables::of($opportunities)
             ->addColumn('action', function($row){
                 return '
-                <a href="'.url("/opportunities/" . $row->id).'" title="Detail"><button class="btn btn-primary btn-sm"><i class="material-icons">details</i></button></a>
+                <a href="'.url("/opportunities/" . $row->id).'" title="Detail"><button class="btn btn-info btn-sm"><i class="material-icons">details</i></button></a>
+                <a href="'.url("/opportunities/" . $row->id . "/edit").'" title="Edit Opportunity"><button class="btn btn-primary btn-sm"><i class="material-icons">mode_edit</i></button></a>
                 ';
             })
             ->rawColumns(['action'])
@@ -35,40 +36,10 @@ class OpportunitiesController extends Controller
      *
      * @return \Illuminate\View\View
      */
-    public function index(Request $request)
+    public function index()
     {
-        $keyword = $request->get('search');
-        $perPage = 25;
 
-        if (!empty($keyword)) {
-            $opportunities = Opportunity::where('title', 'LIKE', "%$keyword%")
-                ->orWhere('date', 'LIKE', "%$keyword%")
-                ->orWhere('start_time', 'LIKE', "%$keyword%")
-                ->orWhere('end_time', 'LIKE', "%$keyword%")
-                ->orWhere('address', 'LIKE', "%$keyword%")
-                ->orWhere('contact_number', 'LIKE', "%$keyword%")
-                ->orWhere('contact_name', 'LIKE', "%$keyword%")
-                ->orWhere('contact_email', 'LIKE', "%$keyword%")
-                ->orWhere('is_volunteer_limit', 'LIKE', "%$keyword%")
-                ->orWhere('number_of_volunteer', 'LIKE', "%$keyword%")
-                ->orWhere('detail', 'LIKE', "%$keyword%")
-                ->orWhere('number_of_student', 'LIKE', "%$keyword%")
-                ->orWhere('is_call', 'LIKE', "%$keyword%")
-                ->orWhere('subject1', 'LIKE', "%$keyword%")
-                ->orWhere('subject2', 'LIKE', "%$keyword%")
-                ->orWhere('subject3', 'LIKE', "%$keyword%")
-                ->orWhere('subject4', 'LIKE', "%$keyword%")
-                ->orWhere('subject5', 'LIKE', "%$keyword%")
-                ->orWhere('subject6', 'LIKE', "%$keyword%")
-                ->orWhere('subject7', 'LIKE', "%$keyword%")
-                ->orWhere('subject8', 'LIKE', "%$keyword%")
-                ->orWhere('is_published', 'LIKE', "%$keyword%")
-                ->latest()->paginate($perPage);
-        } else {
-            $opportunities = Opportunity::latest()->paginate($perPage);
-        }
-
-        return view('opportunities.index', compact('opportunities'));
+        return view('opportunities.index');
     }
 
     /**
@@ -138,9 +109,12 @@ class OpportunitiesController extends Controller
      */
     public function edit($id)
     {
-        $opportunity = Opportunity::findOrFail($id);
 
-        return view('opportunities.edit', compact('opportunity'));
+
+        $opportunity = Opportunity::findOrFail($id);
+        $tasks = Task::where('opportunity_id', $id)->get();
+
+        return view('opportunities.edit', compact('opportunity', 'tasks'));
     }
 
     /**
@@ -154,12 +128,31 @@ class OpportunitiesController extends Controller
     public function update(Request $request, $id)
     {
         
+        $validatedData = $request->validate([
+            'title' => 'required',
+            'date' => 'required',
+            'start_time' => 'required',
+            'end_time' => 'required',
+        ]);
+
+        $user = Auth::user();
+
         $requestData = $request->all();
         
         $opportunity = Opportunity::findOrFail($id);
-        $opportunity->update($requestData);
+        $opprotunity = $opportunity->update($requestData+['user_id'=>$user->id]);
 
-        return redirect('opportunities')->with('flash_message', 'Opportunity updated!');
+        Task::where('opportunity_id', $id)->delete();
+
+        foreach ($request->tasks as $task) {
+            if ($task !="") {
+                Task::create(['opportunity_id'=>$id, 'description'=>$task]);
+            }
+        }
+
+        Session::flash('success','Opportunity has been successfully updated.');
+
+        return redirect('opportunities');
     }
 
     /**
@@ -173,6 +166,6 @@ class OpportunitiesController extends Controller
     {
         Opportunity::destroy($id);
 
-        return redirect('opportunities')->with('flash_message', 'Opportunity deleted!');
+        return redirect('opportunities');
     }
 }

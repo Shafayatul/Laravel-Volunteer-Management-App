@@ -28,8 +28,6 @@ Route::get('/volunteer/signup', 'VolunteersController@signup');
 */
 Route::group(['middleware' => ['role:Admin']], function () {
     Route::post('/admin/assignRole',  'RoleController@assignRole'); 
-    Route::get('/admin/datatable/role_assign', 'RoleController@datatable_user_role');
-    Route::get('/admin/role/assign',  'RoleController@assign')->name('role.assign'); 
     Route::resource('/admin/role',  'RoleController');  
 
     //Teacher Module
