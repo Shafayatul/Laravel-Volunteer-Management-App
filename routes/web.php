@@ -71,6 +71,3 @@ Route::group(['middleware' => ['role:Volunteer']], function () {
 Route::group(['middleware' => ['role:Teacher']], function () {
     Route::get('/teacher/profile', 'TeachersController@profile');
 });
-
-
-

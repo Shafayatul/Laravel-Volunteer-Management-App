@@ -5,7 +5,7 @@
     <section class="content">
         <div class="container-fluid">
             <div class="block-header">
-                <h2>Teacher</h2>
+                <h2>Volunteer</h2>
             </div>
             <!-- Input -->
             <div class="row clearfix">
@@ -13,7 +13,7 @@
                     <div class="card">
                         <div class="header">
                             <h2>
-                                Teacher List
+                                Volunteer List
                             </h2>
                         </div>
                         @include('layouts.partials.alert')
@@ -76,13 +76,10 @@
            backdrop:'static'
         });
      
-
         $(document).on('click', '.user-delete', function(){
             userId = $(this).attr('user-id');
             $('#delete-user-model').modal('show');
         });
-
-
         $(document).on('click', '.btn-user-delete-decision', function(){
             var decision = $(this).attr("id");
             if(decision == "Yes"){
@@ -105,8 +102,6 @@
                 $('#delete-user-model').modal('toggle');
             }
         });
-
-
         var table = $('#users-table').DataTable({
             processing: true,
             serverSide: true,
