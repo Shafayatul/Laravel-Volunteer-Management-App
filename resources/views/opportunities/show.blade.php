@@ -20,7 +20,10 @@
                         <div class="body">
 
                             <div class="row">
-                                <h3>Tilte: {{$opportunity->title}}</h3>
+                                <div class="col-sm-12">
+                                    <h4>Tilte: {{$opportunity->title}}</h4>
+                                </div>
+                                
                                 <div class="col-sm-6">
                                     <h4>Tasks:</h4>
                                     <hr>

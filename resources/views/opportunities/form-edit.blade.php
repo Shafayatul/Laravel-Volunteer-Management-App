@@ -54,6 +54,7 @@
         <br>
         <div class="{{ $errors->has('is_volunteer_limit') ? 'has-error' : ''}}">
             <p><b>Is there a Vol Limit ?</b></p>
+            {!! Form::hidden('is_volunteer_limit', "0") !!}
             {{ Form::checkbox('is_volunteer_limit', 1, ($opportunity->is_volunteer_limit == '1') ? true : false, ['class' => 'filled-in chk-col-deep-orange', 'id' => 'is_volunteer_limit']) }}
             {{Form::label("is_volunteer_limit", "Only a fixed # of people can participate in this opportunity.") }}<br>
         </div>
@@ -75,6 +76,7 @@
 
         <br>
         <div class="{{ $errors->has('is_call') ? 'has-error' : ''}}">
+            {!! Form::hidden('is_call', "0") !!}
             {{ Form::checkbox('is_call', 1, ($opportunity->is_call == '1') ? true : false, ['class' => 'filled-in chk-col-deep-orange', 'id' => 'is_call']) }}
             {{Form::label("is_call", "Volunteer Should Call for Details:") }}
         </div>
@@ -89,36 +91,44 @@
 <hr>
 <div class="row">
     <div class="col-sm-3">
+        {!! Form::hidden('subject1', "0") !!}
         {{ Form::checkbox('subject1', 1, ($opportunity->subject1 == '1') ? true : false, ['class' => 'filled-in chk-col-deep-orange', 'id' => 'subject1']) }}
         {{Form::label("subject1", ucfirst("subject1")) }}<br>
     </div>
     <div class="col-sm-3">
+        {!! Form::hidden('subject2', "0") !!}
         {{ Form::checkbox('subject2', 1, ($opportunity->subject2 == '1') ? true : false, ['class' => 'filled-in chk-col-deep-orange', 'id' => 'subject2']) }}
         {{Form::label("subject2", ucfirst("subject2")) }}<br>
     </div>
     <div class="col-sm-3">
+        {!! Form::hidden('subject3', "0") !!}
         {{ Form::checkbox('subject3', 1, ($opportunity->subject3 == '1') ? true : false, ['class' => 'filled-in chk-col-deep-orange', 'id' => 'subject3']) }}
         {{Form::label("subject3", ucfirst("subject3")) }}<br>
     </div>
     <div class="col-sm-3">
+        {!! Form::hidden('subject4', "0") !!}
         {{ Form::checkbox('subject4', 1, ($opportunity->subject4 == '1') ? true : false, ['class' => 'filled-in chk-col-deep-orange', 'id' => 'subject4']) }}
         {{Form::label("subject4", ucfirst("subject4")) }}<br>
     </div>
 </div>
 <div class="row">
     <div class="col-sm-3">
+        {!! Form::hidden('subject5', "0") !!}
         {{ Form::checkbox('subject5', 1, ($opportunity->subject5 == '1') ? true : false, ['class' => 'filled-in chk-col-deep-orange', 'id' => 'subject5']) }}
         {{Form::label("subject5", ucfirst("subject5")) }}<br>
     </div>
     <div class="col-sm-3">
+        {!! Form::hidden('subject6', "0") !!}
         {{ Form::checkbox('subject6', 1, ($opportunity->subject6 == '1') ? true : false, ['class' => 'filled-in chk-col-deep-orange', 'id' => 'subject6']) }}
         {{Form::label("subject6", ucfirst("subject6")) }}<br>
     </div>
     <div class="col-sm-3">
+        {!! Form::hidden('subject7', "0") !!}
         {{ Form::checkbox('subject7', 1, ($opportunity->subject7 == '1') ? true : false, ['class' => 'filled-in chk-col-deep-orange', 'id' => 'subject7']) }}
         {{Form::label("subject7", ucfirst("subject7")) }}<br>
     </div>
     <div class="col-sm-3">
+        {!! Form::hidden('subject8', "0") !!}
         {{ Form::checkbox('subject8', 1, ($opportunity->subject8 == '1') ? true : false, ['class' => 'filled-in chk-col-deep-orange', 'id' => 'subject8']) }}
         {{Form::label("subject8", ucfirst("subject8")) }}<br>
     </div>

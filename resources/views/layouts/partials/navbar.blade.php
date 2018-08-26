@@ -91,8 +91,20 @@
                             </li>
                         </ul>
                     </li>
-
+                    <li>
+                        <a href="javascript:void(0);" class="menu-toggle">
+                            <i class="material-icons">event</i>
+                            <span>Opportunity</span>
+                        </a>
+                        <ul class="ml-menu">
+                            <li>
+                                <a href="{{ url('/opportunities/all') }}">All Opportunity List</a>
+                            </li>
+                        </ul>
+                    </li>
                     @endhasrole
+
+                    @hasrole('Teacher')
                     <li>
                         <a href="javascript:void(0);" class="menu-toggle">
                             <i class="material-icons">event</i>
@@ -107,6 +119,7 @@
                             </li>
                         </ul>
                     </li>
+                    @endhasrole
 
                     
                 </ul>

@@ -42,6 +42,10 @@ Route::group(['middleware' => ['role:Admin']], function () {
     Route::get('/datatable/volunteer-list', 'VolunteersController@volunteers_list');
     Route::resource('volunteers', 'VolunteersController');
     Route::get('/admin/volunteers/profile/{id}', 'VolunteersController@profile_admin');
+
+    //Opportunity Module
+    Route::get('/opportunities/all', 'OpportunitiesController@all');
+    Route::get('/datatable/opportunity-all-list', 'OpportunitiesController@opportunities_all_list');
 });
 
 
@@ -73,8 +77,13 @@ Route::group(['middleware' => ['role:Teacher']], function () {
 });
 
 
-Route::resource('opportunities', 'OpportunitiesController');
-Route::get('/datatable/opportunity-list', 'OpportunitiesController@opportunities_list');
+Route::group(['middleware' => ['role:Admin|Teacher']], function () {
+    Route::resource('opportunities', 'OpportunitiesController');
+    Route::get('/datatable/opportunity-list', 'OpportunitiesController@opportunities_list');
+    Route::resource('tasks', 'TasksController');
+});
 
 
-Route::resource('tasks', 'TasksController');
+
+
+

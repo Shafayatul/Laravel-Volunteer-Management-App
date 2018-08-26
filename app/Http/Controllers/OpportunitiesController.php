@@ -31,6 +31,20 @@ class OpportunitiesController extends Controller
             ->make(true);
     }
 
+    public function opportunities_all_list()
+    {
+        $opportunities = Opportunity::orderBy('id', 'desc')->get();
+        return Datatables::of($opportunities)
+            ->addColumn('action', function($row){
+                return '
+                <a href="'.url("/opportunities/" . $row->id).'" title="Detail"><button class="btn btn-info btn-sm"><i class="material-icons">details</i></button></a>
+                <a href="'.url("/opportunities/" . $row->id . "/edit").'" title="Edit Opportunity"><button class="btn btn-primary btn-sm"><i class="material-icons">mode_edit</i></button></a>
+                ';
+            })
+            ->rawColumns(['action'])
+            ->make(true);
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -38,9 +52,14 @@ class OpportunitiesController extends Controller
      */
     public function index()
     {
-
         return view('opportunities.index');
     }
+
+    public function all()
+    {
+        return view('opportunities.all');
+    }
+
 
     /**
      * Show the form for creating a new resource.
