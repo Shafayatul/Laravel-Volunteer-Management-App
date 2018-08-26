@@ -9,6 +9,7 @@ use Auth;
 use Image;
 use Session;
 use App\Teacher;
+use App\Opportunity;
 use App\User;
 use Illuminate\Http\Request;
 use \DataTables;
@@ -36,14 +37,16 @@ class TeachersController extends Controller
     {
       $user = Auth::user();
       $teacher = Teacher::where('user_id', $user->id)->first();
-      return view('teachers.profile', compact('user', 'teacher'));
+      $opportunities = Opportunity::where('user_id', $user->id)->get();
+      return view('teachers.profile', compact('user', 'teacher', 'opportunities'));
     }
         
     public function profile_admin($id)
     {
       $user = User::where('id', $id)->first();
       $teacher = Teacher::where('user_id', $user->id)->first();
-      return view('teachers.profile', compact('user', 'teacher'));
+      $opportunities = Opportunity::where('user_id', $user->id)->get();
+      return view('teachers.profile', compact('user', 'teacher', 'opportunities'));
     }
     
 
@@ -53,13 +56,13 @@ class TeachersController extends Controller
                 select(
                     'teachers.id as id', 
                     'teachers.user_id as user_id', 
-                    'teachers.school_name as school_name', 
+                    'teachers.created_at as created_at', 
                     'teachers.phone_number as phone_number'
                 );
         return Datatables::of($teachers)
             ->addColumn('action', function($row){
                 return '
-                <a href="'.url("/admin/teachers/profile/" . $row->id).'" title="Profile"><button class="btn btn-info btn-sm"><i class="material-icons">perm_identity</i></button></a>
+                <a href="'.url("/admin/teachers/profile/" . $row->user_id).'" title="Profile"><button class="btn btn-info btn-sm"><i class="material-icons">perm_identity</i></button></a>
                 <a href="'.url("/teachers/" . $row->id . "/edit").'" title="Edit Teacher"><button class="btn btn-primary btn-sm"><i class="material-icons">mode_edit</i></button></a>
                 <button class="btn btn-danger btn-sm user-delete" title="Delete Teacher" user-id="'.$row->user_id.'"><i class="material-icons">delete</i></button>
                 ';

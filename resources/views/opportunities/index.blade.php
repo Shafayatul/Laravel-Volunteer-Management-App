@@ -13,7 +13,7 @@
                     <div class="card">
                         <div class="header">
                             <h2>
-                                Opportunity List
+                                Opportunity List 
                             </h2>
                         </div>
                         @include('layouts.partials.alert')
@@ -22,9 +22,11 @@
                             <table class="table table-hover dashboard-task-infos" id="users-table">
                                 <thead>
                                     <tr>
-                                        <th>ID</th>
+                                        <th>Opportunity # </th>
                                         <th>Title</th>
                                         <th>Date</th>
+                                        <th>Vol Requested</th>
+                                        <th>Vol Committed</th>
                                         <th>Action</th>
                                     </tr>
                                 </thead>
@@ -78,6 +80,8 @@
                 {data: 'id', name: 'id'},
                 {data: 'title', name: 'title'},
                 {data: 'date', name: 'date'},
+                {data: 'vol_requested', name: 'vol_requested'},
+                {data: 'vol_commited', name: 'vol_commited'},
                 {data: 'action'}
             ]
         });

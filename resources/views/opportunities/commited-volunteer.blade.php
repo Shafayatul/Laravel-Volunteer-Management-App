@@ -5,28 +5,44 @@
     <section class="content">
         <div class="container-fluid">
             <div class="block-header">
-                <h2>Teacher</h2>
+                <h2>Volunteer Opportunity</h2>
             </div>
             <!-- Input -->
             <div class="row clearfix">
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                     <div class="card">
                         <div class="header">
-                            <h2>
-                                Teacher List
-                            </h2>
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <h2>
+                                        Opportunity Title: {{$opportunity->title}}
+                                    </h2>
+                                </div>
+                                <div class="col-sm-6">
+                                    <h2>
+                                        Opportunity Number: {{$opportunity->id}}
+                                    </h2>
+                                </div>
+                            </div>
                         </div>
+
                         @include('layouts.partials.alert')
                         <div class="body">
-
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    Number of Committed Volunteers:  {{$total_volunteer}}
+                                </div>
+                                <div class="col-sm-6">
+                                    Opportunity Number: {{$empty_position}}
+                                </div>
+                            </div>
                             <table class="table table-hover dashboard-task-infos" id="users-table">
                                 <thead>
                                     <tr>
-                                        <th>ID</th>
                                         <th>Name</th>
                                         <th>Email</th>
                                         <th>Phone</th>
-                                        <th>Registered</th>
+                                        <th>Committed</th>
                                         <th>Action</th>
                                     </tr>
                                 </thead>
@@ -72,52 +88,15 @@
 @section('footer-script')
 <script type="text/javascript">
     $(function(){
-        $('#delete-user-model').modal({
-           show:false,
-           backdrop:'static'
-        });
-     
-
-        $(document).on('click', '.user-delete', function(){
-            userId = $(this).attr('user-id');
-            $('#delete-user-model').modal('show');
-        });
-
-
-        $(document).on('click', '.btn-user-delete-decision', function(){
-            var decision = $(this).attr("id");
-            if(decision == "Yes"){
-                $.ajax({
-                     type:'POST',
-                     url:"{{ url('/ajax/delete-teacher') }}",
-                     headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
-                     data:{
-                        'userId' : userId
-                     },
-                     success:function(data){
-                        $('#delete-user-model').modal('toggle');
-                        if(data.msg=="Success"){
-                            table.ajax.reload( null, false );
-                            // alert("User successfully deleted.");
-                        }
-                     }
-                });
-            }else{
-                $('#delete-user-model').modal('toggle');
-            }
-        });
-
-
         var table = $('#users-table').DataTable({
             processing: true,
             serverSide: true,
-            ajax: '{{ url("/datatable/teacher-list") }}',
+            ajax: '{{ url("/datatable/commited-volunteer-list/".$id) }}',
             columns: [
-                {data: 'id', name: 'teachers.id'},
                 {data: 'name', name: 'name'},
                 {data: 'email', name: 'email'},
-                {data: 'phone_number', name: 'teachers.phone_number'},
-                {data: 'created_at', name: 'teachers.created_at'},
+                {data: 'phone_number', name: 'volunteers.phone_number'},
+                {data: 'commited', name: 'commited'},
                 {data: 'action'}
             ]
         });

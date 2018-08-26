@@ -8,14 +8,46 @@ use App\Http\Controllers\Controller;
 use Auth;
 use Session;
 use App\Opportunity;
+use App\Volunteer;
 use App\OpportunityCommit;
 use App\Task;
+use App\User;
 use Illuminate\Http\Request;
 use \DataTables;
 
 class OpportunitiesController extends Controller
 {
 
+
+    public function commited_volunteer_list($id)
+    {
+        $user_id_array = OpportunityCommit::where('opportunity_id', $id)->pluck('user_id');
+        $created_at_array = OpportunityCommit::where('opportunity_id', $id)->pluck('created_at','user_id');
+
+        $volunteers = Volunteer::whereIn('user_id', $user_id_array);
+        return Datatables::of($volunteers)
+            ->addColumn('action', function($row){
+                return '
+                <button class="btn btn-info btn-sm user-delete" title="Message" user-id="'.$row->user_id.'"><i class="material-icons">perm_phone_msg</i></button>
+                ';
+            })
+            ->addColumn('name', function($row){
+                $user = User::where('id', $row->user_id)->first();
+                return $user->name;
+            })
+            ->addColumn('email', function($row){
+                $user = User::where('id', $row->user_id)->first();
+                return $user->email;
+            })
+            ->addColumn('commited', function($row) use($created_at_array){
+                return $created_at_array[$row->user_id];
+            })
+
+
+            ->rawColumns(['action', 'name', 'email','commited'])
+            ->make(true);
+
+    }
 
     public function opportunities_list()
     {
@@ -24,11 +56,23 @@ class OpportunitiesController extends Controller
         return Datatables::of($opportunities)
             ->addColumn('action', function($row){
                 return '
+                <a href="'.url("/opportunities/commited-volunteer/" . $row->id).'" title="Commited Volunteer"><button class="btn btn-warning btn-sm"><i class="material-icons">group</i></button></a>   
                 <a href="'.url("/opportunities/" . $row->id).'" title="Detail"><button class="btn btn-info btn-sm"><i class="material-icons">details</i></button></a>
                 <a href="'.url("/opportunities/" . $row->id . "/edit").'" title="Edit Opportunity"><button class="btn btn-primary btn-sm"><i class="material-icons">mode_edit</i></button></a>
                 ';
             })
-            ->rawColumns(['action'])
+            ->addColumn('vol_requested', function($row){
+                if ((is_numeric($row->number_of_volunteer)) || ($row->number_of_volunteer!=0)) {
+                    return $row->number_of_volunteer;
+                }else{
+                    return "--";
+                }
+                
+            })
+            ->addColumn('vol_commited', function($row){
+                return OpportunityCommit::where('opportunity_id', $row->id)->count();
+            })
+            ->rawColumns(['action', 'vol_requested', 'vol_commited'])
             ->make(true);
     }
 
@@ -38,11 +82,23 @@ class OpportunitiesController extends Controller
         return Datatables::of($opportunities)
             ->addColumn('action', function($row){
                 return '
+                <a href="'.url("/opportunities/commited-volunteer/" . $row->id).'" title="Commited Volunteer"><button class="btn btn-warning btn-sm"><i class="material-icons">group</i></button></a>                
                 <a href="'.url("/opportunities/" . $row->id).'" title="Detail"><button class="btn btn-info btn-sm"><i class="material-icons">details</i></button></a>
                 <a href="'.url("/opportunities/" . $row->id . "/edit").'" title="Edit Opportunity"><button class="btn btn-primary btn-sm"><i class="material-icons">mode_edit</i></button></a>
                 ';
+            })            
+            ->addColumn('vol_requested', function($row){
+                if ((is_numeric($row->number_of_volunteer)) || ($row->number_of_volunteer!=0)) {
+                    return $row->number_of_volunteer;
+                }else{
+                    return "--";
+                }
+                
             })
-            ->rawColumns(['action'])
+            ->addColumn('vol_commited', function($row){
+                return OpportunityCommit::where('opportunity_id', $row->id)->count();
+            })
+            ->rawColumns(['action', 'vol_requested', 'vol_commited'])
             ->make(true);
     }
 
@@ -79,6 +135,20 @@ class OpportunitiesController extends Controller
     public function new()
     {
         return view('opportunities.new');
+    }
+
+    public function commited_volunteer($id)
+    {
+        $opportunity = Opportunity::where('id', $id)->first();
+        $total_volunteer = OpportunityCommit::where('opportunity_id', $id)->count();
+        if ((is_numeric($opportunity->number_of_volunteer)) || ($opportunity->number_of_volunteer!=0)) {
+            $empty_position = $opportunity->number_of_volunteer-$total_volunteer;
+        }else{
+            $empty_position = "--";
+            $total_volunteer = "--";
+        }
+         
+        return view('opportunities.commited-volunteer',compact('opportunity', 'total_volunteer', 'empty_position', 'id'));
     }
 
 

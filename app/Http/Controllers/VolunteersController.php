@@ -9,6 +9,8 @@ use App\User;
 use Session;
 use Image;
 use Auth;
+use App\Opportunity;
+use App\OpportunityCommit;
 use App\Volunteer;
 use Illuminate\Http\Request;
 use \DataTables;
@@ -36,13 +38,18 @@ class VolunteersController extends Controller
     {
       $user = Auth::user();
       $volunteer = Volunteer::where('user_id', $user->id)->first();
-      return view('volunteers.profile', compact('user', 'volunteer'));
+      $opportunity_ids_array = OpportunityCommit::where('user_id', $user->id)->pluck('opportunity_id');
+      $opportunities = Opportunity::whereIn('id', $opportunity_ids_array)->get();
+      return view('volunteers.profile', compact('user', 'volunteer', 'opportunities'));
     }    
     public function profile_admin($id)
     {
       $user = User::where('id', $id)->first();
       $volunteer = Volunteer::where('user_id', $user->id)->first();
-      return view('volunteers.profile', compact('user', 'volunteer'));
+
+      $opportunity_ids_array = OpportunityCommit::where('user_id', $user->id)->pluck('opportunity_id');
+      $opportunities = Opportunity::whereIn('id', $opportunity_ids_array)->get();
+      return view('volunteers.profile', compact('user', 'volunteer', 'opportunities'));
     }
     
     public function volunteers_list()
@@ -51,12 +58,13 @@ class VolunteersController extends Controller
                 select(
                     'volunteers.id as id', 
                     'volunteers.user_id as user_id', 
-                    'volunteers.phone_number as phone_number'
+                    'volunteers.phone_number as phone_number',
+                    'volunteers.created_at as created_at'
                 );
         return Datatables::of($volunteers)
             ->addColumn('action', function($row){
                 return '
-                <a href="'.url("/admin/volunteers/profile/" . $row->id).'" title="Profile"><button class="btn btn-info btn-sm"><i class="material-icons">perm_identity</i></button></a>
+                <a href="'.url("/admin/volunteers/profile/" . $row->user_id).'" title="Profile"><button class="btn btn-info btn-sm"><i class="material-icons">perm_identity</i></button></a>
                 <a href="'.url("/volunteers/" . $row->id . "/edit").'" title="Edit Volunteer"><button class="btn btn-primary btn-sm"><i class="material-icons">mode_edit</i></button></a>
 
                 <button class="btn btn-danger btn-sm user-delete" title="Delete Volunteer" user-id="'.$row->user_id.'"><i class="material-icons">delete</i></button>

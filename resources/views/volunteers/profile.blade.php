@@ -45,7 +45,15 @@
                                     </div>
                                 </div>
                                 <div class="col-md-6">
-
+                                    <h5 class="text-center">Opportunity Listing History</h5>
+                                    <hr>
+                                    @foreach($opportunities as $opportunity)
+                                        <p>
+                                            <b>Title: </b>{{$opportunity->title}}<br>
+                                            {{$opportunity->date}} [{{$opportunity->start_time}}-{{$opportunity->end_time}}]
+                                        </p>
+                                        
+                                    @endforeach
                                 </div>
                             </div>
 

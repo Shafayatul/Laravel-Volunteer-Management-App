@@ -26,6 +26,7 @@
                                         <th>Name</th>
                                         <th>Email</th>
                                         <th>Phone</th>
+                                        <th>Registered</th>
                                         <th>Action</th>
                                     </tr>
                                 </thead>
@@ -111,6 +112,7 @@
                 {data: 'name', name: 'name'},
                 {data: 'email', name: 'email'},
                 {data: 'phone_number', name: 'volunteers.phone_number'},
+                {data: 'created_at', name: 'volunteers.created_at'},
                 {data: 'action'}
             ]
         });

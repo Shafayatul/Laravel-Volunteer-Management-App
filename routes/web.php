@@ -88,6 +88,10 @@ Route::group(['middleware' => ['role:Teacher']], function () {
 
 
 Route::group(['middleware' => ['role:Admin|Teacher']], function () {
+    
+    Route::get('/opportunities/commited-volunteer/{id}', 'OpportunitiesController@commited_volunteer');
+    Route::get('/datatable/commited-volunteer-list/{id}', 'OpportunitiesController@commited_volunteer_list');
+
     Route::resource('opportunities', 'OpportunitiesController');
     Route::get('/datatable/opportunity-list', 'OpportunitiesController@opportunities_list');
     Route::resource('tasks', 'TasksController');
