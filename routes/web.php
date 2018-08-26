@@ -63,7 +63,17 @@ Route::group(['middleware' => ['role:Admin|Teacher|Volunteer']], function () {
 * only Volunteer
 */
 Route::group(['middleware' => ['role:Volunteer']], function () {
+    
+    //pofile
     Route::get('/volunteer/profile', 'VolunteersController@profile');
+    
+    //Opportunity Module
+    Route::post('/opportunities/accept', 'OpportunitiesController@accept');
+    Route::get('/opportunities/decision/{id}', 'OpportunitiesController@decision');
+    Route::get('/opportunities/new', 'OpportunitiesController@new');
+    Route::get('/datatable/opportunity-new-list', 'OpportunitiesController@opportunities_new_list');
+
+
 });
 
 
@@ -87,3 +97,5 @@ Route::group(['middleware' => ['role:Admin|Teacher']], function () {
 
 
 
+
+// Route::resource('opportunity-commits', 'OpportunityCommitsController');

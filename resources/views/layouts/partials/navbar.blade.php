@@ -122,6 +122,21 @@
                     @endhasrole
 
                     
+                    @hasrole('Volunteer')
+                    <li>
+                        <a href="javascript:void(0);" class="menu-toggle">
+                            <i class="material-icons">event</i>
+                            <span>Opportunity</span>
+                        </a>
+                        <ul class="ml-menu">
+                            <li>
+                                <a href="{{url('/opportunities/new')}}">New Opportunity</a>
+                            </li>
+                        </ul>
+                    </li>
+                    @endhasrole
+
+                    
                 </ul>
             </div>
         </aside>

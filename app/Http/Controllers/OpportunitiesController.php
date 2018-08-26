@@ -8,6 +8,7 @@ use App\Http\Controllers\Controller;
 use Auth;
 use Session;
 use App\Opportunity;
+use App\OpportunityCommit;
 use App\Task;
 use Illuminate\Http\Request;
 use \DataTables;
@@ -45,6 +46,20 @@ class OpportunitiesController extends Controller
             ->make(true);
     }
 
+    public function opportunities_new_list()
+    {
+        $date = date("Y-m-d");
+        $opportunities = Opportunity::where('date', '>=', $date)->orderBy('id', 'desc')->get();
+        return Datatables::of($opportunities)
+            ->addColumn('action', function($row){
+                return '
+                <a href="'.url("/opportunities/decision/" . $row->id).'" title="Take Decision"><button class="btn btn-primary btn-sm"><i class="material-icons">event_seat</i></button></a>
+                ';
+            })
+            ->rawColumns(['action'])
+            ->make(true);
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -58,6 +73,12 @@ class OpportunitiesController extends Controller
     public function all()
     {
         return view('opportunities.all');
+    }
+
+
+    public function new()
+    {
+        return view('opportunities.new');
     }
 
 
@@ -117,6 +138,35 @@ class OpportunitiesController extends Controller
         $tasks = Task::where('opportunity_id', $id)->get();
 
         return view('opportunities.show', compact('opportunity', 'tasks'));
+    }
+
+    public function decision($id)
+    {
+        $opportunity = Opportunity::findOrFail($id);
+        $tasks = Task::where('opportunity_id', $id)->get();
+
+        $user_id = Auth::id();
+        $is_commited = 0;
+        $is_commited = OpportunityCommit::where('user_id', $user_id)->where('opportunity_id', $id)->count();
+
+        if ($is_commited == 1) {
+            Session::flash('success','Congratulation!!! You have commited to this opportunity.');
+        }
+
+        return view('opportunities.decision', compact('opportunity', 'tasks', 'id', 'is_commited'));
+    }
+
+    public function accept(Request $request)
+    {
+        $opportunity_id = $request->input('opportunityId');
+        $user_id = Auth::id();
+        
+         $opportunity_commit = new OpportunityCommit;
+         $opportunity_commit->user_id = $user_id;
+         $opportunity_commit->opportunity_id = $opportunity_id;
+         $opportunity_commit->save();
+
+        return response()->json(array('msg'=> 'Success'), 200);
     }
 
     /**
