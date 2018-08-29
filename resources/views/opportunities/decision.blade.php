@@ -26,7 +26,8 @@
                                 <div class="col-sm-4 text-right">
                                     @if($is_commited==0)
                                     <button type="button" class="btn bg-red waves-effect opportunity-accept" id="{{$id}}">Accept</button>
-                                    <button type="button" class="btn bg-light-blue waves-effect opportunity-decline" id="{{$id}}">Decline</button>
+                                    <a href="{{ url('/opportunities/decline') }}"><button type="button" class="btn bg-light-blue waves-effect" id="{{$id}}">Decline</button></a>
+                                    
                                     @endif
                                 </div>
                             </div>
@@ -157,12 +158,7 @@
                         }
                      }
                 });
-            });
-            $('.opportunity-decline').click(function(){
-                parent.history.back();
-                return false;
-            });
-            
+            });           
         }); 
     </script>
     

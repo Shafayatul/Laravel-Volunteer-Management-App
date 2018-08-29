@@ -258,7 +258,7 @@ class OpportunitiesController extends Controller
         $is_commited = OpportunityCommit::where('user_id', $user_id)->where('opportunity_id', $id)->count();
 
         if ($is_commited == 1) {
-            Session::flash('success','Congratulation!!! You have commited to this opportunity.');
+            Session::flash('success','Congratulation!!! You have committed to this opportunity. The final decision will be taken by the teacher. The teacher will send you confirmation E-MAIL or SMS.');
         }
 
         return view('opportunities.decision', compact('opportunity', 'tasks', 'id', 'is_commited'));
@@ -275,6 +275,12 @@ class OpportunitiesController extends Controller
          $opportunity_commit->save();
 
         return response()->json(array('msg'=> 'Success'), 200);
+    }
+
+    public function decline()
+    {
+        Session::flash('success','Thanks for your action. You can check other available opportunities below.');
+        return view('/opportunities/new');
     }
 
     /**

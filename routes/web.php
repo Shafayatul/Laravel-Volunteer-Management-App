@@ -74,6 +74,7 @@ Route::group(['middleware' => ['auth']], function() {
         Route::post('/opportunities/accept', 'OpportunitiesController@accept');
         Route::get('/opportunities/decision/{id}', 'OpportunitiesController@decision');
         Route::get('/opportunities/new', 'OpportunitiesController@new');
+        Route::get('/opportunities/decline', 'OpportunitiesController@decline');
         Route::get('/datatable/opportunity-new-list', 'OpportunitiesController@opportunities_new_list');
 
 
