@@ -55,7 +55,16 @@ class OpportunitiesController extends Controller
         $opportunities = Opportunity::where('user_id', $id)->get();
         return Datatables::of($opportunities)
             ->addColumn('action', function($row){
-                return '
+                if ($row->is_published==1) {
+                    $status ='<button type="button" class="btn btn-success btn-circle waves-effect waves-circle waves-float" title="published">
+                            <i class="material-icons">done_outline</i>
+                        </button>';
+                }else{
+                    $status ='<button type="button" class="btn bg-grey btn-circle waves-effect waves-circle waves-float" title="saved">
+                                <i class="material-icons">save</i>
+                            </button>';
+                }
+                return $status.'
                 <a href="'.url("/opportunities/commited-volunteer/" . $row->id).'" title="Commited Volunteer"><button class="btn btn-warning btn-sm"><i class="material-icons">group</i></button></a>   
                 <a href="'.url("/opportunities/" . $row->id).'" title="Detail"><button class="btn btn-info btn-sm"><i class="material-icons">details</i></button></a>
                 <a href="'.url("/opportunities/" . $row->id . "/edit").'" title="Edit Opportunity"><button class="btn btn-primary btn-sm"><i class="material-icons">mode_edit</i></button></a>

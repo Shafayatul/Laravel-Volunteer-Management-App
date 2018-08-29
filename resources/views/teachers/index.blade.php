@@ -109,6 +109,7 @@
 
 
         var table = $('#users-table').DataTable({
+            order: [ [0, 'desc'] ],
             processing: true,
             serverSide: true,
             ajax: '{{ url("/datatable/teacher-list") }}',
