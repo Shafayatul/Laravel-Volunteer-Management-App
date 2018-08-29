@@ -8,16 +8,32 @@ use App\Http\Controllers\Controller;
 use Auth;
 use Session;
 use App\Opportunity;
+use App\Teacher;
 use App\Volunteer;
 use App\OpportunityCommit;
 use App\Task;
 use App\User;
 use Illuminate\Http\Request;
 use \DataTables;
+use App\Mail\NewOpportunity;
+use Illuminate\Support\Facades\Mail;
 
 class OpportunitiesController extends Controller
 {
 
+    public function commited_volunteer($id)
+    {
+        $opportunity = Opportunity::where('id', $id)->first();
+        $total_volunteer = OpportunityCommit::where('opportunity_id', $id)->count();
+        if ((is_numeric($opportunity->number_of_volunteer)) || ($opportunity->number_of_volunteer!=0)) {
+            $empty_position = $opportunity->number_of_volunteer-$total_volunteer;
+        }else{
+            $empty_position = "--";
+            $total_volunteer = "--";
+        }
+         
+        return view('opportunities.commited-volunteer',compact('opportunity', 'total_volunteer', 'empty_position', 'id'));
+    }
 
     public function commited_volunteer_list($id)
     {
@@ -146,19 +162,7 @@ class OpportunitiesController extends Controller
         return view('opportunities.new');
     }
 
-    public function commited_volunteer($id)
-    {
-        $opportunity = Opportunity::where('id', $id)->first();
-        $total_volunteer = OpportunityCommit::where('opportunity_id', $id)->count();
-        if ((is_numeric($opportunity->number_of_volunteer)) || ($opportunity->number_of_volunteer!=0)) {
-            $empty_position = $opportunity->number_of_volunteer-$total_volunteer;
-        }else{
-            $empty_position = "--";
-            $total_volunteer = "--";
-        }
-         
-        return view('opportunities.commited-volunteer',compact('opportunity', 'total_volunteer', 'empty_position', 'id'));
-    }
+
 
 
     /**
@@ -199,11 +203,36 @@ class OpportunitiesController extends Controller
             }
         }
 
+        if ($opprotunity->is_published==1) {
+            $this->send_email_for_new_opportunity($opprotunity);
+        }
+        
+
         Session::flash('success','Opportunity has been successfully added.');
 
         return redirect('opportunities')->with('flash_message', 'Opportunity added!');
     }
 
+    /**
+     * Send email to all volunteer
+     *
+     * @param  object  $opprotunity
+     *
+     * @return null
+     */
+    public function send_email_for_new_opportunity($opprotunity){
+        //get teacher's name
+        $teacher_name = User::where('id', $opprotunity->user_id)->first()->name;
+
+        // get teacher's school
+        $school_name = Teacher::where('user_id', $opprotunity->user_id)->first()->school_name;
+
+        //get emails of the volunteer
+        $volunteer_ids = Volunteer::pluck('user_id');
+        $volunteer_emails = User::whereIn('id', $volunteer_ids)->pluck('email');
+        // Send Email
+        Mail::to($volunteer_emails)->send(new NewOpportunity($opprotunity, $teacher_name, $school_name));
+    }
     /**
      * Display the specified resource.
      *
@@ -275,6 +304,8 @@ class OpportunitiesController extends Controller
      */
     public function update(Request $request, $id)
     {
+        //get old $old_opprotunity status
+        $old_opprotunity = Opportunity::where('id', $id)->value('is_published'); 
         
         $validatedData = $request->validate([
             'title' => 'required',
@@ -289,6 +320,7 @@ class OpportunitiesController extends Controller
         
         $opportunity = Opportunity::findOrFail($id);
         $opprotunity = $opportunity->update($requestData+['user_id'=>$user->id]);
+        
 
         Task::where('opportunity_id', $id)->delete();
 
@@ -296,6 +328,10 @@ class OpportunitiesController extends Controller
             if ($task !="") {
                 Task::create(['opportunity_id'=>$id, 'description'=>$task]);
             }
+        }
+
+        if (($request->is_published==1) && ($old_opprotunity==0)) {
+            $this->send_email_for_new_opportunity($request);
         }
 
         Session::flash('success','Opportunity has been successfully updated.');

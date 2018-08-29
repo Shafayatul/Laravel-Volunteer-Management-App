@@ -54,31 +54,29 @@
             </div>
             <!-- #END# Input -->
 
-                <div id="delete-user-model" class="modal fade" role="dialog">
-                  <div class="modal-dialog">
+            <div id="delete-user-model" class="modal fade" role="dialog">
+              <div class="modal-dialog">
 
-                    <!-- Modal content-->
-                    <div class="modal-content">
-                      <div class="modal-header">
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal">&times;</button>
                         <h4 class="modal-title">Are you sure that you want to delete this user?</h4>
-                      </div>
-                      <div class="modal-body">
-                        
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <button type="button" class="btn bg-success btn-block btn-lg btn-block btn-user-delete-decision" id="No">No</button>                              
-                                </div>
-                                <div class="col-md-6">
-                                    <button type="button" class="btn bg-danger btn-block btn-lg btn-block btn-user-delete-decision" id="Yes">Yes</button>                              
-                                </div>
-
-                            </div>      
-                      </div>
                     </div>
-                  </div>
-                </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <button type="button" class="btn bg-success btn-block btn-lg btn-block btn-user-delete-decision" id="No">No</button>                              
+                            </div>
+                            <div class="col-md-6">
+                                <button type="button" class="btn bg-danger btn-block btn-lg btn-block btn-user-delete-decision" id="Yes">Yes</button>                              
+                            </div>
 
+                        </div>      
+                    </div>
+                </div>
+              </div>
+            </div>
 
         </div>
     </section>
@@ -89,7 +87,7 @@
 <script type="text/javascript">
     $(function(){
         var table = $('#users-table').DataTable({
-            order: [ [0, 'desc'] ],
+            "bPaginate": false,
             processing: true,
             serverSide: true,
             ajax: '{{ url("/datatable/commited-volunteer-list/".$id) }}',

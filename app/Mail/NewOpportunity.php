@@ -10,15 +10,19 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 class NewOpportunity extends Mailable
 {
     use Queueable, SerializesModels;
-
+    public $opportunity;
+    public $teacher_name;
+    public $school_name;
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct($opportunity, $teacher_name, $school_name)
     {
-        //
+        $this->opportunity = $opportunity;
+        $this->teacher_name = $teacher_name;
+        $this->school_name = $school_name;
     }
 
     /**
@@ -28,6 +32,6 @@ class NewOpportunity extends Mailable
      */
     public function build()
     {
-        return $this->view('view.name');
+        return $this->markdown('emails.new-opportunity');
     }
 }
