@@ -10,6 +10,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 class NewOpportunity extends Mailable
 {
     use Queueable, SerializesModels;
+    public $id;
     public $opportunity;
     public $teacher_name;
     public $school_name;
@@ -18,8 +19,9 @@ class NewOpportunity extends Mailable
      *
      * @return void
      */
-    public function __construct($opportunity, $teacher_name, $school_name)
+    public function __construct($id, $opportunity, $teacher_name, $school_name)
     {
+        $this->id = $id;
         $this->opportunity = $opportunity;
         $this->teacher_name = $teacher_name;
         $this->school_name = $school_name;

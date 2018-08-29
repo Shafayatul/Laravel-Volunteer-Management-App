@@ -204,7 +204,7 @@ class OpportunitiesController extends Controller
         }
 
         if ($opprotunity->is_published==1) {
-            $this->send_email_for_new_opportunity($opprotunity);
+            $this->send_email_for_new_opportunity($opprotunity->id, $opprotunity);
         }
         
 
@@ -220,7 +220,7 @@ class OpportunitiesController extends Controller
      *
      * @return null
      */
-    public function send_email_for_new_opportunity($opprotunity){
+    public function send_email_for_new_opportunity($id, $opprotunity){
         //get teacher's name
         $teacher_name = User::where('id', $opprotunity->user_id)->first()->name;
 
@@ -231,7 +231,7 @@ class OpportunitiesController extends Controller
         $volunteer_ids = Volunteer::pluck('user_id');
         $volunteer_emails = User::whereIn('id', $volunteer_ids)->pluck('email');
         // Send Email
-        Mail::to($volunteer_emails)->send(new NewOpportunity($opprotunity, $teacher_name, $school_name));
+        Mail::to($volunteer_emails)->send(new NewOpportunity($id, $opprotunity, $teacher_name, $school_name));
     }
     /**
      * Display the specified resource.
@@ -331,7 +331,7 @@ class OpportunitiesController extends Controller
         }
 
         if (($request->is_published==1) && ($old_opprotunity==0)) {
-            $this->send_email_for_new_opportunity($request);
+            $this->send_email_for_new_opportunity($id, $request);
         }
 
         Session::flash('success','Opportunity has been successfully updated.');
