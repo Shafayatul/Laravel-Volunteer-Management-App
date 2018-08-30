@@ -44,7 +44,7 @@ Route::group(['middleware' => ['auth']], function() {
         Route::post('/ajax/delete-volunteer', 'VolunteersController@ajax_delete_volunteer');
         Route::get('/datatable/volunteer-list', 'VolunteersController@volunteers_list');
         Route::resource('volunteers', 'VolunteersController');
-        Route::get('/admin/volunteers/profile/{id}', 'VolunteersController@profile_admin');
+        
 
         //Opportunity Module
         Route::get('/opportunities/all', 'OpportunitiesController@all');
@@ -91,7 +91,14 @@ Route::group(['middleware' => ['auth']], function() {
     });
 
 
+
+    /**
+    * only Teacher AND ADMIN
+    */
     Route::group(['middleware' => ['role:Admin|Teacher']], function () {
+
+        Route::post('/opportunity/teacher/volunteer-approve/', 'OpportunitiesController@approve_volunteer');
+        Route::get('/admin/volunteers/profile/{id}', 'VolunteersController@profile_admin');
         
         Route::get('/opportunities/commited-volunteer/{id}', 'OpportunitiesController@commited_volunteer');
         Route::get('/datatable/commited-volunteer-list/{id}', 'OpportunitiesController@commited_volunteer_list');

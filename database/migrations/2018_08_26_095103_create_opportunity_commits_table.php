@@ -18,6 +18,7 @@ class CreateOpportunityCommitsTable extends Migration
             $table->foreign('user_id')->references('id')->on('users');
             $table->integer('opportunity_id')->unsigned();
             $table->foreign('opportunity_id')->references('id')->on('opportunities');
+            $table->string('status')->default('pending')->nullable();
             $table->timestamps();
         });
     }

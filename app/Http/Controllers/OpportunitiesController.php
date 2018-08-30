@@ -16,6 +16,7 @@ use App\User;
 use Illuminate\Http\Request;
 use \DataTables;
 use App\Mail\NewOpportunity;
+use App\Mail\ApproveConfirmation;
 use Illuminate\Support\Facades\Mail;
 
 class OpportunitiesController extends Controller
@@ -39,14 +40,30 @@ class OpportunitiesController extends Controller
     {
         $user_id_array = OpportunityCommit::where('opportunity_id', $id)->pluck('user_id');
         $created_at_array = OpportunityCommit::where('opportunity_id', $id)->pluck('created_at','user_id');
+        $status_array = OpportunityCommit::where('opportunity_id', $id)->pluck('status','user_id');
 
         $volunteers = Volunteer::whereIn('user_id', $user_id_array);
         return Datatables::of($volunteers)
-            ->addColumn('action', function($row){
-                return '
-                <button class="btn btn-info btn-sm user-delete" title="Message" user-id="'.$row->user_id.'"><i class="material-icons">perm_phone_msg</i></button>
-                ';
+            ->addColumn('status', function($row) use($status_array){
+                if ($status_array[$row->user_id] == "pending") {
+                    $str = '<button type="button" class="btn btn-sm bg-orange waves-effect">
+                                <i class="material-icons">loop</i>
+                                <span>Pending</span>
+                            </button>';
+                }elseif ($status_array[$row->user_id] == "approved") {
+                    $str = '<button type="button" class="btn btn-sm bg-blue waves-effect">
+                                <i class="material-icons">how_to_reg</i>
+                                <span>Approved</span>
+                            </button>';
+                }
+                return $str;
             })
+            
+            ->addColumn('profile', function($row){
+                return '
+                <a target=”_blank” href="'.url("/admin/volunteers/profile").'/'.$row->user_id.'" title="Profile"><button class="btn btn-info btn-sm"><i class="material-icons">perm_identity</i></button></a>
+                ';
+            })            
             ->addColumn('name', function($row){
                 $user = User::where('id', $row->user_id)->first();
                 return $user->name;
@@ -58,9 +75,11 @@ class OpportunitiesController extends Controller
             ->addColumn('commited', function($row) use($created_at_array){
                 return $created_at_array[$row->user_id];
             })
+            ->addColumn('checkbox', function($row){
+                return '<input type="checkbox" id="'.$row->user_id.'" class="filled-in chk-col-red" ><label for="'.$row->user_id.'"></label>';
+            })
 
-
-            ->rawColumns(['action', 'name', 'email','commited'])
+            ->rawColumns(['status', 'name', 'email','commited', 'checkbox', 'profile'])
             ->make(true);
 
     }
@@ -258,7 +277,12 @@ class OpportunitiesController extends Controller
         $is_commited = OpportunityCommit::where('user_id', $user_id)->where('opportunity_id', $id)->count();
 
         if ($is_commited == 1) {
-            Session::flash('success','Congratulation!!! You have committed to this opportunity. The final decision will be taken by the teacher. The teacher will send you confirmation E-MAIL or SMS.');
+            if (OpportunityCommit::where('user_id', $user_id)->where('opportunity_id', $id)->where('status', 'approved')->count()==1) {
+                Session::flash('success','Congratulation!!! You have been approved by the teacher.');
+            }else{
+                Session::flash('success','Congratulation!!! You have committed to this opportunity. The final decision will be taken by the teacher. The teacher will send you confirmation E-MAIL or SMS.');
+            }
+            
         }
 
         return view('opportunities.decision', compact('opportunity', 'tasks', 'id', 'is_commited'));
@@ -275,6 +299,31 @@ class OpportunitiesController extends Controller
          $opportunity_commit->save();
 
         return response()->json(array('msg'=> 'Success'), 200);
+    }
+
+    public function approve_volunteer(Request $request)
+    {
+        $opportunity_id = $request->input('opportunityId');
+        $user_id = $request->input('userId');
+        $message = $request->input('message');
+
+        OpportunityCommit::whereIn('user_id', $user_id)->where('opportunity_id', $opportunity_id)->update(['status' => 'approved']);
+        
+        // sending email
+        $this->send_email_for_volunteer_approval($opportunity_id, $user_id, $message);
+
+
+        return response()->json(array('msg'=> 'Success'), 200);
+    }
+
+    public function send_email_for_volunteer_approval($id, $volunteer_ids, $message){
+        
+        $opprotunity = Opportunity::where('id', $id)->first();
+        //get emails of the volunteer
+        $volunteer_emails = User::whereIn('id', $volunteer_ids)->pluck('email');
+
+        // Send Email
+        Mail::to($volunteer_emails)->send(new ApproveConfirmation($id, $opprotunity, $message));
     }
 
     public function decline()
