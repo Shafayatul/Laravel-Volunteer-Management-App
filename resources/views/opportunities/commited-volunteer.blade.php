@@ -160,7 +160,72 @@
                      success:function(data){
                         $('#assign-volunteer-model').modal('toggle');
                         if(data.msg=="Success"){
+                            alert("Approve has been done successfully.")
                             table.ajax.reload( null, false );
+                        }
+                     }
+                });
+            }else{
+                $('#message-help').show();
+            }
+        });
+
+        $(document).on('click', '#final-send-email', function(){
+            var assignMessage = $("#assign-message").val();
+            if(assignMessage != ""){
+
+                var userId = [];
+                $(".filled-in").each(function(){
+                    if ($(this).prop('checked')==true){ 
+                       userId.push($(this).attr('id'));
+                    }
+                });
+
+                $.ajax({
+                     type:'POST',
+                     url:"{{ url('/opportunity/teacher/email-to-volunteer/') }}",
+                     headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+                     data:{
+                        'userId' : userId,
+                        'message' : assignMessage,
+                        'opportunityId' : $('#opportunity-id').val(),
+                     },
+                     success:function(data){
+                        $('#assign-volunteer-model').modal('toggle');
+                        if(data.msg=="Success"){
+                            alert("Email has been successfully sent.")
+                        }
+                     }
+                });
+            }else{
+                $('#message-help').show();
+            }
+        });
+
+        $(document).on('click', '#final-send-sms', function(){
+            var assignMessage = $("#assign-message").val();
+            if(assignMessage != ""){
+
+                var userId = [];
+                $(".filled-in").each(function(){
+                    if ($(this).prop('checked')==true){ 
+                       userId.push($(this).attr('id'));
+                    }
+                });
+
+                $.ajax({
+                     type:'POST',
+                     url:"{{ url('/opportunity/teacher/sms-to-volunteer/') }}",
+                     headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+                     data:{
+                        'userId' : userId,
+                        'message' : assignMessage,
+                        'opportunityId' : $('#opportunity-id').val(),
+                     },
+                     success:function(data){
+                        $('#assign-volunteer-model').modal('toggle');
+                        if(data.msg=="Success"){
+                            alert("SMS has been successfully sent.")
                         }
                      }
                 });

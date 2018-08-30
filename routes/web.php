@@ -97,6 +97,8 @@ Route::group(['middleware' => ['auth']], function() {
     */
     Route::group(['middleware' => ['role:Admin|Teacher']], function () {
 
+        Route::post('/opportunity/teacher/sms-to-volunteer/', 'OpportunitiesController@sms_to_volunteer');
+        Route::post('/opportunity/teacher/email-to-volunteer/', 'OpportunitiesController@email_to_volunteer');
         Route::post('/opportunity/teacher/volunteer-approve/', 'OpportunitiesController@approve_volunteer');
         Route::get('/admin/volunteers/profile/{id}', 'VolunteersController@profile_admin');
         

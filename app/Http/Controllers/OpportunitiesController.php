@@ -16,11 +16,31 @@ use App\User;
 use Illuminate\Http\Request;
 use \DataTables;
 use App\Mail\NewOpportunity;
+use App\Mail\TeacherEmail;
 use App\Mail\ApproveConfirmation;
 use Illuminate\Support\Facades\Mail;
+use Twilio;
+use Twilio\Rest\Client;
 
 class OpportunitiesController extends Controller
 {
+
+    private function send_sms($to, $message)
+    {
+
+        $sid    = env('TWILIO_ACCOUNT_SID');
+        $token  = env('TWILIO_AUTH_TOKEN');
+        $twilio = new Client($sid, $token);
+
+        $message = $twilio->messages
+                          ->create($to,
+                                   array("from" => env('TWILIO_NUMBER'), "body" => $message)
+                          );
+
+        return true;        
+    }
+
+
 
     public function commited_volunteer($id)
     {
@@ -239,19 +259,25 @@ class OpportunitiesController extends Controller
      *
      * @return null
      */
-    public function send_email_for_new_opportunity($id, $opprotunity){
+    public function send_email_for_new_opportunity($id, $opportunity){
         //get teacher's name
-        $teacher_name = User::where('id', $opprotunity->user_id)->first()->name;
+        $teacher_name = User::where('id', $opportunity->user_id)->first()->name;
 
         // get teacher's school
-        $school_name = Teacher::where('user_id', $opprotunity->user_id)->first()->school_name;
+        $school_name = Teacher::where('user_id', $opportunity->user_id)->first()->school_name;
 
         //get emails of the volunteer
         $volunteer_ids = Volunteer::pluck('user_id');
         $volunteer_emails = User::whereIn('id', $volunteer_ids)->pluck('email');
         // Send Email
-        Mail::to($volunteer_emails)->send(new NewOpportunity($id, $opprotunity, $teacher_name, $school_name));
+        Mail::to($volunteer_emails)->send(new NewOpportunity($id, $opportunity, $teacher_name, $school_name));
+
+        //Send SMS to all volunteer
+        $to = Volunteer::pluck('phone_number')->toArray();
+        $message = 'A new opportunity is active now. Title:'.$opportunity->title.', Date: '.$opportunity->date.'['.$opportunity->start_time.'-'.$opportunity->end_time.']. For detail visit: '.url('/opportunities/decision/'.$id);
+        $this->send_sms($to, $message);
     }
+
     /**
      * Display the specified resource.
      *
@@ -316,14 +342,56 @@ class OpportunitiesController extends Controller
         return response()->json(array('msg'=> 'Success'), 200);
     }
 
-    public function send_email_for_volunteer_approval($id, $volunteer_ids, $message){
+    public function sms_to_volunteer(Request $request)
+    {
+        $opportunity_id = $request->input('opportunityId');
+        $user_id = $request->input('userId');
+        $to = Volunteer::whereIn('user_id', $user_id)->pluck('phone_number')->toArray();;
+        $message = $request->input('message');
+        
+        // sending email
+        $this->send_sms($to, $message);
+
+        return response()->json(array('msg'=> 'Success'), 200);
+    }
+
+    public function email_to_volunteer(Request $request)
+    {
+        $opportunity_id = $request->input('opportunityId');
+        $user_id = $request->input('userId');
+        $message = $request->input('message');
+        
+        // sending email
+        $this->send_email_to_volunteer($opportunity_id, $user_id, $message);
+
+
+        return response()->json(array('msg'=> 'Success'), 200);
+    }
+
+    public function send_email_to_volunteer($id, $volunteer_ids, $message){
         
         $opprotunity = Opportunity::where('id', $id)->first();
         //get emails of the volunteer
         $volunteer_emails = User::whereIn('id', $volunteer_ids)->pluck('email');
 
         // Send Email
-        Mail::to($volunteer_emails)->send(new ApproveConfirmation($id, $opprotunity, $message));
+        Mail::to($volunteer_emails)->send(new TeacherEmail($id, $opprotunity, $message));
+    }
+
+    public function send_email_for_volunteer_approval($id, $volunteer_ids, $message){
+        
+        $opportunity = Opportunity::where('id', $id)->first();
+        //get emails of the volunteer
+        $volunteer_emails = User::whereIn('id', $volunteer_ids)->pluck('email');
+
+        // Send Email
+        Mail::to($volunteer_emails)->send(new ApproveConfirmation($id, $opportunity, $message));
+
+        //Send SMS to all volunteer
+        $to = Volunteer::whereIn('user_id', $volunteer_ids)->pluck('phone_number')->toArray();
+        $message = 'You are approved as a volunteer. Opportunity Title:'.$opportunity->title.', Date: '.$opportunity->date.'['.$opportunity->start_time.'-'.$opportunity->end_time.']. For detail visit: '.url('/opportunities/decision/'.$id);
+        $this->send_sms($to, $message);
+
     }
 
     public function decline()
